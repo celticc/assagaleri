@@ -1,4 +1,4 @@
-<body id="page-top"  >
+<body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -30,41 +30,27 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Kategori
+                MENU
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             
 
-            <!-- Nav Item - MUG -->
+            <!-- Nav Item - produk -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-mug-hot"></i>
-                    <span>MUG</span></a>
-            </li>
-
-            <!-- Nav Item - pakaian -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tshirt"></i>
-                    <span>Pakaian</span></a>
-            </li>
-
-            <!-- Nav Item - ganci -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-circle"></i>
-                    <span>Ganci</span></a>
+                <a class="nav-link" href="<?php echo base_url('Admin/Data_Produk'); ?>">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Produk</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Nav Item -->
+            <!-- Nav Item  -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('Admin'); ?>">
+                <a class="nav-link" href="<?php echo base_url('Produk'); ?>">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Ke Admin -> </span></a>
+                    <span><- ke Pelanggan</span></a>
             </li>
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -286,5 +272,4 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                
                 <div class="container-fluid">

@@ -1,0 +1,406 @@
+// file config
+$autoload['libraries'] = array('database');
+$autoload['helper'] = array('url');
+
+$config['base_url'] = 'http://assagaleri.id/';
+
+$route['default_controller'] = 'Produk';
+$route['404_override'] = '';
+$route['translate_uri_dashes'] = FALSE;
+
+//.htaccess
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+// Controller Admin.php
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admin extends CI_Controller {
+
+    
+    // Controller Admin
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('Admin_Model');
+        
+    }
+    
+    public function index()
+    {
+        $data = array(
+            'isi' => 'admin/beranda',
+            'total_produk' => $this->Admin_Model->Total_Produk()
+        );
+        $this->load->view('admin/layout/wrapper', $data, FALSE);
+    }
+
+    public function Data_Produk()
+    {
+        $data = array(
+            'isi' => 'admin/produk',
+            'produk' => $this->Admin_Model->Tampil_Produk()
+        );
+        $this->load->view('admin/layout/wrapper', $data, FALSE);
+    }
+}
+
+//Controller Produk.php
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Produk extends CI_Controller {
+
+    // mengakses produk_model
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('Produk_Model');
+        
+    }
+    
+    // menampilkan data di tabel produk
+    public function index()
+    {
+        $data = array(
+            'produk' =>$this->Produk_Model->Beranda(),
+            'isi' => 'pelanggan/produk'
+        );
+        $this->load->view('pelanggan/layout/wrapper', $data, FALSE);
+    }
+
+}
+
+/* End of file produk.php */
+ ?>
+
+
+// Model Admin_Model.php
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admin_Model extends CI_Model {
+
+public function __construct()
+{
+    parent::__construct();
+    $this->load->database();
+}
+
+public function Tampil_Produk()
+{
+    $this->db->select('*');
+    $this->db->from('tb_produk');
+    $this->db->order_by('id','desc');
+    $query = $this->db->get();
+    return $query->result();
+}
+
+public function Total_Produk()
+{
+    $this->db->select('*');
+    $this->db->from('tb_produk');
+    $this->db->order_by('id','desc');
+    $query = $this->db->get();
+    $rowcount = $query->num_rows();
+    return $rowcount;
+}
+}
+?>
+
+
+// Model Produk_Model.php
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Produk_Model extends CI_Model {
+
+public function __construct()
+{
+    parent::__construct();
+    $this->load->database();
+}
+
+public function Beranda()
+{
+    $this->db->select('*');
+    $this->db->from('tb_produk');
+    $this->db->order_by('id','desc');
+    $query = $this->db->get();
+    return $query->result();
+}    
+
+}
+
+/* End of file Produk_Model.php */
+ ?>
+
+
+//Layout content.php
+<?php if($isi)
+{
+    $this->load->view($isi);    
+} ?>
+
+//Layout header.php
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzDHPihbUCvrHPS-HeWgxhYcVXK4jV9MiZ1Q&usqp=CAU" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?php echo base_url() ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?php echo base_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+// Layout Footer.php
+
+</div>
+                <!-- /.container-fluid -->
+
+            </div>
+
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        
+                        <span>Copyright &copy;</span>
+                        <span style="color: red;">Isi Nama Masing-Masing</span>
+                        <span>2023</span>
+                        
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo base_url() ?>assets/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="<?php echo base_url() ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url() ?>assets/js/sb-admin-2.min.js"></script>
+
+</body>
+</html>
+
+
+//Layout Sidebar.php
+<!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Kategori
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            
+
+            <!-- Nav Item - MUG -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-mug-hot"></i>
+                    <span>MUG</span></a>
+            </li>
+
+            <!-- Nav Item - pakaian -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-tshirt"></i>
+                    <span>Pakaian</span></a>
+            </li>
+
+            <!-- Nav Item - ganci -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-circle"></i>
+                    <span>Ganci</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Nav Item -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('Admin'); ?>">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Ke Admin -> </span></a>
+            </li>
+
+
+//Layout Wrapper.php
+<?php 
+require_once('header.php');
+require_once('sidebar.php');
+require_once('content.php');
+require_once('footer.php');
+ ?>
+
+//views pelanggan->produk.php
+
+<title>ASSA GALERI</title>
+
+<div class="row">
+  <?php foreach ($produk as $prd): ?>
+    <div class="card mr-3 mb-3" style="width: 18rem;">
+    <img class="card-img-top" style="display: block; margin-left: auto; margin-right: auto; margin-top:15px; width:250px; height:250px;" src="<?php echo base_url().'uploads/'.$prd->foto ?>" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title" ><?php echo $prd->nama ?></h5>
+      <span style="color: black;
+       font-size: 24px;">Rp. <?php echo $prd->harga ?></span><br>
+   
+      <div style="text-align: center; margin-top:5px;">
+      <a href="#" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Beli"  ><i class="fas fa-fw fa-cart-arrow-down"></i></a>
+      <a href="#" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Deskripsi"  ><i class="fas fa-fw fa-eye" data-toggle="modal" data-target="#produk_<?php echo $prd->id ?>"></i></a>
+      <a href="#" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Tambahkan ke keranjang"  ><i class="fas fa-fw fa-cart-plus"></i></a>    
+      </div>   
+    </div>
+  </div> 
+  <?php endforeach; ?>
+</div>
+
+<!-- Modal -->
+<?php foreach($produk as $pr): ?>
+<div class="modal fade" id="produk_<?php echo $pr->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="exampleModalLabel" ><?php echo $pr->nama ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <img class="card-img-top" style="display: block; margin-left: auto; margin-right: auto; margin-top:15px; width:250px; height:250px;" src="<?php echo base_url().'uploads/'.$pr->foto ?>" alt="Card image cap">
+      </div>
+      <strong style="text-align: center; font-size:25px;">Rp. <?php echo $pr->harga ?></strong>
+      
+      <textarea class="mr-2 ml-2" disabled cols="30" rows="7" style="font-family:monocle;"><?php echo $pr->deskripsi ?></textarea>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?>
+
+
+//views Admin->produk.php
+<button class="btn btn-primary mb-2">Tambah Data</button>
+
+<div class="card border-left-info shadow h-100 py-2">
+<div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>NO</th>
+                <th>NAMA</th>
+                <th>KATEGORI</th>
+                <th>HARGA</th>
+                <th>STOK</th>
+                <th>DESKRIPSI</th>
+                <th colspan="2">Aksi</th>
+            </tr>
+
+            <?php $no=1; foreach ($produk as $prd):?>
+            <tr>
+                <td><?php echo $no++ ?></td>
+                <td><?php echo $prd->nama ?></td>
+                <td><?php echo $prd->kategori ?></td>
+                <td><?php echo $prd->harga ?></td>
+                <td><?php echo $prd->stok  ?></td>
+                <td><?php echo $prd->deskripsi  ?></td>
+                <td>
+                    <a href="" class="btn btn-sm btn-warning mb-2"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Ubah Data"></i></a>
+                    <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Data"></i></a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+</div>
+</div>
+
+//views Admin->beranda.php
+
+<div class="row">
+
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Total Produk</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_produk;  ?></div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-tshirt fa-2x text-gray-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
